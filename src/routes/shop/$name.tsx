@@ -1,8 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
-import Breadcrumb from '../../components/breadcrumb'
 import { getProduct } from '../../api/product'
 import ProductDetails from '../../components/product-details'
 import { TProductResponse } from '../../utils/types'
+import { useQuery } from '@tanstack/react-query'
+import Breadcrumb from '../../components/breadcrumb'
 
 export const Route = createFileRoute('/shop/$name')({
   component: Product,
@@ -11,13 +12,20 @@ export const Route = createFileRoute('/shop/$name')({
 
 function Product() {
   const { name } = Route.useParams()
-  const data: TProductResponse = Route.useLoaderData()
+  const initalData: TProductResponse = Route.useLoaderData()
+
+  const { data = initalData } = useQuery({
+    queryKey: ['product', name],
+    queryFn: () => getProduct(name),
+    staleTime: 50,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true
+  })
 
   return (
     <>
-      <Breadcrumb title="Home" links={['shop', name]} />
-      <ProductDetails product={data.items[0]} />
-      <div></div>
+      <Breadcrumb />
+      <ProductDetails product={data?.items[0]} />
     </>
   )
 }

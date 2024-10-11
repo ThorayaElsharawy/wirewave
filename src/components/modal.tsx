@@ -4,9 +4,10 @@ import LoginForm from "./login-form";
 type ModalProps = {
     toggleModal: boolean,
     setToggleModal: React.Dispatch<React.SetStateAction<boolean>>
+    handleLoginSubmit: (email: string, password: string) => void
 }
 
-export default function Modal({ toggleModal, setToggleModal }: ModalProps) {
+export default function Modal({ toggleModal, setToggleModal, handleLoginSubmit }: ModalProps) {
     const modalRef = useRef<HTMLDivElement>(null)
 
     if (!toggleModal) return null;
@@ -23,6 +24,10 @@ export default function Modal({ toggleModal, setToggleModal }: ModalProps) {
         };
     }, [toggleModal])
 
+    const handleCloseModal = () => {
+        setToggleModal(false)
+    }
+
     return (
         <div className="fixed inset-0 bg-black/80 bg-opacity-50 flex justify-center items-center z-50">
             <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -30,7 +35,7 @@ export default function Modal({ toggleModal, setToggleModal }: ModalProps) {
                     <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12 relative" ref={modalRef}>
                         <button
                             className="absolute top-2 right-4 text-black text-2xl"
-                            onClick={() => setToggleModal(false)}
+                            onClick={handleCloseModal}
                         >
                             &times;
                         </button>
@@ -40,7 +45,7 @@ export default function Modal({ toggleModal, setToggleModal }: ModalProps) {
                             </h2>
                         </div>
 
-                        <LoginForm />
+                        <LoginForm handleLoginSubmit={handleLoginSubmit} />
 
                         <div>
                             <div className="relative mt-10">

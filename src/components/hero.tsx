@@ -8,7 +8,7 @@ export default function Hero() {
         <div className='bg-[#1f1f1f] w-full text-slate-100 relative'>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-[5rem] m-auto justify-center px-7 pt-12 md:mt-0'>
 
-                <div className='sm:max-w-[30rem] m-auto md:ml-auto md:my-auto relative sm:z-10
+                <div className='sm:max-w-[30rem] m-auto md:ml-auto md:my-auto md:mr-0 relative sm:z-10
                    
                     '>
                     <h2 className='text-4xl sm:text-[2.5rem] md:text-[3.5rem] uppercase font-bold md:pb-14'>

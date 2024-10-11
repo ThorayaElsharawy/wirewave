@@ -1,7 +1,12 @@
+import { Link } from '@tanstack/react-router';
 import { useRef, useState } from 'react'
 import { FaUserAlt } from 'react-icons/fa';
 
-export default function UserAccountBtn() {
+type UserAccountBtnProps = {
+    handleLogout: () => void
+}
+
+export default function UserAccountBtn({ handleLogout }: UserAccountBtnProps) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const timeoutRef = useRef<number | null>(null); // To hold the timeout ID
 
@@ -25,7 +30,7 @@ export default function UserAccountBtn() {
             <button
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                className='text-slate-100 font-bold text-xs transition-colors hover:text-yellow-300 flex 
+                className='text-slate-100 font-bold text-sm transition-colors hover:text-yellow-300 flex 
                 items-center gap-2 duration-300'
             >
                 <FaUserAlt className='text-lg' />
@@ -37,15 +42,15 @@ export default function UserAccountBtn() {
                     onMouseLeave={handleMouseLeave}
                     className="absolute mt-3 -ml-20 sm:-ml-6 py-2 w-36 md:w-40 text-sm bg-white border rounded shadow-lg"
                 >
-                    <a href="#" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
+                    <Link to="/profile" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
                         My account
-                    </a>
-                    <a href="#" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
+                    </Link>
+                    <Link to="/settings" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
                         Settings
-                    </a>
-                    <a href="#" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
+                    </Link>
+                    <button onClick={handleLogout} className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-start">
                         Logout
-                    </a>
+                    </button>
                 </div>
             )}
         </div>

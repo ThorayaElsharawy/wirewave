@@ -18,6 +18,7 @@ import { Route as ShopIndexImport } from './routes/shop/index'
 import { Route as ShopNameImport } from './routes/shop/$name'
 import { Route as AuthenticatedSettingsImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedProfileImport } from './routes/_authenticated/profile'
+import { Route as OneTwoThreeImport } from './routes/one.two.three'
 
 // Create/Update Routes
 
@@ -54,6 +55,11 @@ const AuthenticatedSettingsRoute = AuthenticatedSettingsImport.update({
 const AuthenticatedProfileRoute = AuthenticatedProfileImport.update({
   path: '/profile',
   getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const OneTwoThreeRoute = OneTwoThreeImport.update({
+  path: '/one/two/three',
+  getParentRoute: () => rootRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -109,6 +115,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShopIndexImport
       parentRoute: typeof rootRoute
     }
+    '/one/two/three': {
+      id: '/one/two/three'
+      path: '/one/two/three'
+      fullPath: '/one/two/three'
+      preLoaderRoute: typeof OneTwoThreeImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -136,6 +149,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof AuthenticatedSettingsRoute
   '/shop/$name': typeof ShopNameRoute
   '/shop': typeof ShopIndexRoute
+  '/one/two/three': typeof OneTwoThreeRoute
 }
 
 export interface FileRoutesByTo {
@@ -146,6 +160,7 @@ export interface FileRoutesByTo {
   '/settings': typeof AuthenticatedSettingsRoute
   '/shop/$name': typeof ShopNameRoute
   '/shop': typeof ShopIndexRoute
+  '/one/two/three': typeof OneTwoThreeRoute
 }
 
 export interface FileRoutesById {
@@ -157,6 +172,7 @@ export interface FileRoutesById {
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/shop/$name': typeof ShopNameRoute
   '/shop/': typeof ShopIndexRoute
+  '/one/two/three': typeof OneTwoThreeRoute
 }
 
 export interface FileRouteTypes {
@@ -169,8 +185,17 @@ export interface FileRouteTypes {
     | '/settings'
     | '/shop/$name'
     | '/shop'
+    | '/one/two/three'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/cart' | '/profile' | '/settings' | '/shop/$name' | '/shop'
+  to:
+    | '/'
+    | ''
+    | '/cart'
+    | '/profile'
+    | '/settings'
+    | '/shop/$name'
+    | '/shop'
+    | '/one/two/three'
   id:
     | '__root__'
     | '/'
@@ -180,6 +205,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings'
     | '/shop/$name'
     | '/shop/'
+    | '/one/two/three'
   fileRoutesById: FileRoutesById
 }
 
@@ -189,6 +215,7 @@ export interface RootRouteChildren {
   CartRoute: typeof CartRoute
   ShopNameRoute: typeof ShopNameRoute
   ShopIndexRoute: typeof ShopIndexRoute
+  OneTwoThreeRoute: typeof OneTwoThreeRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -197,6 +224,7 @@ const rootRouteChildren: RootRouteChildren = {
   CartRoute: CartRoute,
   ShopNameRoute: ShopNameRoute,
   ShopIndexRoute: ShopIndexRoute,
+  OneTwoThreeRoute: OneTwoThreeRoute,
 }
 
 export const routeTree = rootRoute
@@ -215,7 +243,8 @@ export const routeTree = rootRoute
         "/_authenticated",
         "/cart",
         "/shop/$name",
-        "/shop/"
+        "/shop/",
+        "/one/two/three"
       ]
     },
     "/": {
@@ -244,6 +273,9 @@ export const routeTree = rootRoute
     },
     "/shop/": {
       "filePath": "shop/index.tsx"
+    },
+    "/one/two/three": {
+      "filePath": "one.two.three.tsx"
     }
   }
 }

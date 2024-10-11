@@ -23,8 +23,7 @@ export type TDisplay = 'list' | 'grid'
 
 export type itemFilter = {
     categories: category
-    querySearch: string
-  }
-  
-export type category = 'headphones' | 'mobiles&tablets' | 'laptops' | 'microphones' | ''
+}
+
+export type category = 'headphones' | 'mobiles&tablets' | 'laptops' | 'microphones' | 'all'
 

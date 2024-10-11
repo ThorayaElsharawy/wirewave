@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, useRouter } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 import Breadcrumb from '../../components/breadcrumb'
 import Section from '../../components/section'
 import { RiLayoutGrid2Fill } from 'react-icons/ri'
@@ -11,19 +11,17 @@ import {
   MdOutlineKeyboardArrowRight
 } from 'react-icons/md'
 
-import { getproducts, searchProduct } from '../../api/product'
+import { getproducts } from '../../api/product'
 import { useEffect, useState } from 'react'
-import { category, itemFilter, TDisplay, TProductDetails, TProductResponse } from '../../utils/types'
+import { category, itemFilter, TDisplay, TProductDetails } from '../../utils/types'
 
 import GridProducts from '../../components/grid-products'
 import ListProducts from '../../components/list-products'
 
-
 export const Route = createFileRoute('/shop/')({
   validateSearch: (search: Record<string, unknown>): itemFilter => {
     return {
-      categories: (search.categories as string) as category,
-      querySearch: search.querySearch as string
+      categories: (search.categories as string) as category
     }
   },
   component: Shop,
@@ -32,55 +30,22 @@ export const Route = createFileRoute('/shop/')({
 
 function Shop() {
   const products = Route.useLoaderData()
-  const { categories, querySearch } = Route.useSearch()
-  const router = useRouter()
-
+  const { categories } = Route.useSearch()
   const [display, setDisplay] = useState<TDisplay>('grid')
-  const [search, setSearch] = useState(querySearch || '')
   const [filterProducts, setFilterProducts] = useState<TProductDetails[]>(products.items)
 
-  const navigate = useNavigate({ from: Route.fullPath })
-
   useEffect(() => {
-    const fetchAndFilterProducts = async () => {
-      let updatedProducts = products.items
-
-      console.log(categories)
-      if (categories) {
-        updatedProducts = products.items.filter(item => item.expand.category_id.name === categories)
-      }
-
-      console.log(search.length > 0)
-      if (search.length > 0) {
-        const searchResult: TProductResponse = await searchProduct(search)
-        updatedProducts = searchResult.items || []
-      }
-
+    if (categories !== 'all') {
+      const updatedProducts = products.items.filter(item => item.expand.category_id.name === categories)
       setFilterProducts(updatedProducts)
     }
+  }, [categories])
 
-    fetchAndFilterProducts()
-  }, [search, categories])
-
-  const searchSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
-    if (filterProducts.length === 1) {
-      router.navigate({
-        to: '/shop/$name',
-        params: { name: filterProducts[0].name },
-      });
-    } else {
-      router.navigate({
-        to: '/shop',
-        search: { querySearch, categories }
-      })
-    }
-  }
 
   return (
     <>
-      <Breadcrumb links={['shop']} search={search} navigate={navigate} setSearch={setSearch} products={products.items} handleSearchSubmit={searchSubmit} />
+      <Breadcrumb />
+
       <Section >
         <div className='lg:flex pt-14 h-full'>
           <Sidebar />

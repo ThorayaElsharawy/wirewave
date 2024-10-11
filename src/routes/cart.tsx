@@ -108,13 +108,13 @@ function Cart() {
                             </thead>
                             <tbody className='text-sm'>
                                 <tr className='border-b'>
-                                    <td className='py-4'>Vestibulum suscipit ×
+                                    <td className='py-4'>Vestibulum suscipit x
                                         <strong>1</strong>
                                     </td>
                                     <td className='py-4'>£165.00</td>
                                 </tr>
                                 <tr className='border-b'>
-                                    <td className='py-4'>Vestibulum dictum magna ×
+                                    <td className='py-4'>Vestibulum dictum magna x
                                         <strong>1</strong>
                                     </td>
                                     <td className='py-4'>£165.00</td>

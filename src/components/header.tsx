@@ -1,7 +1,7 @@
-import { Link } from '@tanstack/react-router';
+import { Link, useRouter } from '@tanstack/react-router';
 import { useState } from 'react'
 import Section from './section';
-import { FaCartShopping, FaUserLarge } from 'react-icons/fa6';
+import { FaCartShopping } from 'react-icons/fa6';
 import { IoLogIn } from 'react-icons/io5';
 import Modal from './modal';
 import { category } from '../utils/types';
@@ -13,13 +13,28 @@ const HEADER: category[] = ['headphones', 'mobiles&tablets', 'laptops', 'microph
 export default function Header() {
     const [toggleNavigation, setToggleNavigation] = useState(false);
     const [toggleModal, setToggleModal] = useState(false)
+    const { isLogged, signOut, signIn } = useAuth()
+    const [authStatus, setAuthStatus] = useState(isLogged())
+    const router = useRouter()
 
-    const { isLogged, signOut } = useAuth()
+    const handleLogin = async (email: string, password: string) => {
+        const response = await signIn(email, password)
 
-    const handleLogout = () => {
-        signOut()
+        if (response === true) {
+            setToggleModal(false)
+            setAuthStatus(true)
+        } else {
+            console.log(response)
+        }
+
+        router.invalidate()
     }
 
+    const handleLogout = async () => {
+        signOut()
+        setAuthStatus(false)
+        router.invalidate()
+    }
 
     return (
         <div className='bg-[#1f1f1f]/95 w-full text-slate-100'>
@@ -34,24 +49,24 @@ export default function Header() {
                         {HEADER.map(item => (
                             <Link key={item}
                                 to='/shop'
-                                search={{ categories: item, querySearch: '' }}
+                                search={{ categories: item }}
                                 className='inline-block mx-4 uppercase font-bold text-sm hover:text-yellow-300 transition-colors'>{item}
                             </Link>
                         ))}
                     </nav>
 
                     <div className='flex gap-3'>
-                        {isLogged() ?
-                            <UserAccountBtn />
-                            :
-                            <button onClick={() => setToggleModal(!toggleModal)} 
-                            className='
-                            border border-white rounded-full
-                            text-slate-100 font-bold text-xs transition-colors hover:text-yellow-300 flex items-center gap-2 duration-300'>
-                                <IoLogIn className='text-2xl' />
-                                <span className='text-sm'>Login</span>
-                            </button>
-                        }
+                        <div className='sm:min-w-[100px] mt-1'>
+                            {isLogged() ?
+                                <UserAccountBtn handleLogout={handleLogout} />
+                                :
+                                <button onClick={() => setToggleModal(!toggleModal)}
+                                    className='text-slate-100 font-bold text-xs transition-colors hover:text-yellow-300 flex items-center gap-2 duration-300'>
+                                    <IoLogIn className='text-2xl' />
+                                    <span className='text-sm uppercase'>Login</span>
+                                </button>
+                            }
+                        </div>
 
                         <Link to="/cart" className='text-slate-100 font-bold text-xs transition-colors 
                             hover:text-yellow-300 flex items-center gap-2 duration-300 relative'>
@@ -64,7 +79,7 @@ export default function Header() {
             </div>
 
             {toggleModal && (
-                <Modal toggleModal={toggleModal} setToggleModal={setToggleModal} />
+                <Modal handleLoginSubmit={handleLogin} toggleModal={toggleModal} setToggleModal={setToggleModal} />
             )}
         </div>
     )

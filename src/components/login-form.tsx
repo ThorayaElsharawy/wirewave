@@ -1,15 +1,17 @@
-import { useAuth } from "../hooks/useAuth"
+type LoginFormProps = {
+    handleLoginSubmit: (email: string, password: string) => void
+}
 
-export default function LoginForm() {
-    const { signIn } = useAuth()
+export default function LoginForm({ handleLoginSubmit }: LoginFormProps) {
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-
-        const formData = new FormData(e.target as HTMLFormElement)
-        const email = formData.get('email') as string
-        const password = formData.get('password') as string
-        signIn(email, password)
+        e.preventDefault();
+        const formData = new FormData(e.target as HTMLFormElement);
+        const email = formData.get('email') as string;
+        const password = formData.get('password') as string;
+        handleLoginSubmit(email, password);
     }
+
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
             <div>

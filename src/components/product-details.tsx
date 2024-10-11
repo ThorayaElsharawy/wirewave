@@ -1,28 +1,23 @@
 import { FaCartShopping, FaRegHeart } from 'react-icons/fa6'
-import { TProductDetails, TProductResponse } from '../utils/types'
+import { TProductDetails } from '../utils/types'
 import Section from './section'
 import { IoEye } from 'react-icons/io5'
 import { formatValue } from '../utils/helpers'
 import SingleProduct from './single-product'
-import { useEffect, useState } from 'react'
 import { getproducts } from '../api/product'
+import { useQuery } from '@tanstack/react-query'
 
 type ProductDetailsProps = {
     product: TProductDetails
 }
 
 export default function ProductDetails({ product }: ProductDetailsProps) {
-    const [products, setProducts] = useState<TProductResponse>()
-    console.log(product)
+    
+    const { data: products } = useQuery({
+        queryKey: ['products'],
+        queryFn: getproducts
+    })
 
-    useEffect(() => {
-        const getAllProducts = async () => {
-            const data: TProductResponse = await getproducts()
-            setProducts(data)
-        }
-
-        getAllProducts()
-    }, [])
     return (
         <Section>
             <div className='grid md:grid-cols-[auto_auto] gap-10 items-center justify-center mt-10'>

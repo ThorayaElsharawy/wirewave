@@ -22,17 +22,14 @@ function Home() {
       <Section className='my-10 xl:px-[10rem] relative'>
         <div className='flex items-center justify-between'>
           <Heading className='w-full' title='our product' />
-          <Link search={{
-            categories: '',
-            querySearch: ''
-          }} to='/shop' className='absolute ml-auto right-[10%] text-[#f0ce16] 
+          <Link search={{ categories: 'all' }} to='/shop' className='absolute ml-auto right-[10%] text-[#f0ce16] 
                 hover:text-black font-semibold transition-colors'>
             Show all products
             <MdArrowRight className='inline-block text-3xl' />
           </Link>
         </div>
 
-        <Products products={products}  />
+        <Products products={products} />
 
       </Section>
       {/* <Products /> */}
